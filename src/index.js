@@ -9,22 +9,6 @@ export default {
             });
         }
 
-        // 攔截常見的瀏覽器自動請求
-        const ignoredPaths = [
-            "/favicon.ico",
-            "/favicon.png",
-            "/apple-touch-icon.png",
-            "/apple-touch-icon-precomposed.png",
-            "/robots.txt",
-            "/sitemap.xml",
-            "/.well-known/",
-            "/manifest.json",
-            "/browserconfig.xml",
-        ];
-        if (ignoredPaths.some((p) => url.pathname.startsWith(p))) {
-            return new Response(null, { status: 404 });
-        }
-
         // 攔截 /ping，直接回應不轉發到 Modal
         if (url.pathname === "/ping") {
             return new Response(JSON.stringify({ message: "pong" }), {

@@ -2,21 +2,21 @@ export default {
     async fetch(request, env) {
         const url = new URL(request.url);
 
-        // 攔截 /，直接回應 "hello world"
+        // Intercept /, directly respond with "hello world"
         if (url.pathname === "/") {
             return new Response("hello world", {
                 headers: { "Content-Type": "text/plain" },
             });
         }
 
-        // 攔截 /ping，直接回應不轉發到 Modal
+        // Intercept /ping, respond directly without forwarding to Modal
         if (url.pathname === "/ping") {
             return new Response(JSON.stringify({ message: "pong" }), {
                 headers: { "Content-Type": "application/json" },
             });
         }
 
-        // 僅 POST /predict 轉發到 Modal
+        // Only forward POST /predict to Modal
         if (request.method === "POST" && url.pathname === "/predict") {
             const modalUrl = env.MODAL_URL + url.pathname + url.search;
 
@@ -30,7 +30,7 @@ export default {
             });
         }
 
-        // 其餘請求回傳 404
+        // All other requests return 404
         return new Response(null, { status: 404 });
     },
 };

@@ -32,16 +32,21 @@ export default {
             });
         }
 
-        // 其他請求（/predict 等）轉發到 Modal
-        const modalUrl = env.MODAL_URL + url.pathname + url.search;
+        // 僅 POST /predict 轉發到 Modal
+        if (request.method === "POST" && url.pathname === "/predict") {
+            const modalUrl = env.MODAL_URL + url.pathname + url.search;
 
-        const headers = new Headers(request.headers);
-        headers.set("X-Modal-Proxy-Key", env.MODAL_PROXY_KEY);
+            const headers = new Headers(request.headers);
+            headers.set("X-Modal-Proxy-Key", env.MODAL_PROXY_KEY);
 
-        return fetch(modalUrl, {
-            method: request.method,
-            headers,
-            body: request.body,
-        });
+            return fetch(modalUrl, {
+                method: request.method,
+                headers,
+                body: request.body,
+            });
+        }
+
+        // 其餘請求回傳 404
+        return new Response(null, { status: 404 });
     },
 };

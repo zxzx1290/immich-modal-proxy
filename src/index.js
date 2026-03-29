@@ -11,8 +11,8 @@ export default {
 
         // Intercept /ping, respond directly without forwarding to Modal
         if (url.pathname === "/ping") {
-            return new Response(JSON.stringify({ message: "pong" }), {
-                headers: { "Content-Type": "application/json" },
+            return new Response("pong", {
+                headers: { "Content-Type": "text/plain" },
             });
         }
 
